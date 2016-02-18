@@ -1,0 +1,14 @@
+{
+	name: "sankeyWidget",
+	source: [
+		"d3.min.js",
+		"widget.js",
+		"sankey.js"
+		
+	],
+
+	style: [
+
+		"widget.css"
+	]
+}
