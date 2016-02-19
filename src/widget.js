@@ -126,23 +126,17 @@ prism.registerWidget("sankey", {
 			var numofDests = 0;
 			// create distinct nodes
 			_.each(rawData, function(record, index){
-				if (nodesObj[record[indexes.source].text] == undefined) {
-					nodesObj[record[indexes.source].text] = record;
+				var source_key = record[indexes.source].text,
+					dest_key = record[indexes.destination].text;
+				if (nodesObj[source_key] == undefined) {
+					nodesObj[source_key] = record;
 					numOfSources++;
-					var nodeSrc = {};
-					nodeSrc.node = i;
-					nodeSrc.name = record[indexes.source].text;
-					data.nodes.push(nodeSrc);
-					i++;
+					data.nodes.push({node: i++, name: source_key});
 				}
-				if (nodesObj[record[indexes.destination].text]  == undefined) {
-					nodesObj[record[indexes.destination].text] = record;
+				if (nodesObj[dest_key] == undefined) {
+					nodesObj[dest_key] = record;
 					numofDests++;
-					var nodeDest = {};
-					nodeDest.node = i;
-					nodeDest.name = record[indexes.destination].text;
-					data.nodes.push(nodeDest);
-					i++;
+					data.nodes.push({node: i++, name: dest_key});
 				}
 			})
 			// verify amount of nodes
