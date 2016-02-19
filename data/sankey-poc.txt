@@ -15,3 +15,7 @@ posting_id,appl_id,user_id,dept,start_state,end_state,days
 2,6,2,"PHYS",1,2,2
 2,7,3,"PHYS",1,2,2
 2,8,3,"PHYS",1,2,1
+2,5,2,"PHYS",2,0,10
+2,6,2,"PHYS",2,0,20
+2,7,3,"PHYS",2,0,20
+2,8,3,"PHYS",2,0,10
