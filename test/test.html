@@ -142,6 +142,19 @@ function createChart( energy ) {
       .attr("x", 6 + sankey.nodeWidth())
       .attr("text-anchor", "start");
 
+  /* Partial implementation for issue
+   *  https://github.com/hughdbrown/sankey/issues/2
+   */
+  var click_path = function(d) {
+    if (d3.event.defaultPrevented) return; // click suppressed
+    var s = d.source,
+        t = d.target;
+    console.log("clicked " + s.name + "," + t.name);
+  };
+
+  d3.selectAll(".link").on("click", click_path);
+  d3.selectAll(".cycleLink").on("click", click_path);
+
   function dragmove(d) {
     d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
     sankey.relayout();
