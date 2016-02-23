@@ -29,7 +29,6 @@
   stroke-opacity: .2;
 }
 
-
 .cycleLink {
   fill: #600;
   opacity: .2;
@@ -44,7 +43,6 @@
 .link:hover {
   stroke-opacity: .5;
 }
-
 </style>
 </head>
 <body>
@@ -65,7 +63,6 @@ of the chart where cycles travel.
 <p id="chart"></p>
 
 <script>
-
 var margin = {top: 1, right: 1, bottom: 6, left: 1},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
@@ -78,8 +75,6 @@ var sankey = d3.sankey()
     .nodeWidth(15)
     .nodePadding(10)
     .size([width, height]);
-
-
 
 var svg = d3.select("#chart").append("svg")
   .attr( "preserveAspectRatio", "xMinYMid meet" )
@@ -107,14 +102,18 @@ function createChart( energy ) {
     .enter().append("path")
       .attr("class", function(d) { return (d.causesCycle ? "cycleLink" : "link") })
       .attr("d", path)
-	  .sort(function(a, b) { return b.dy - a.dy; })
-      ;
+      .sort(function(a, b) { return b.dy - a.dy; });
 
   link.filter( function(d) { return !d.causesCycle} )
-	.style("stroke-width", function(d) { return Math.max(1, d.dy); })
+    .style("stroke-width", function(d) { return Math.max(1, d.dy); })
 
   link.append("title")
       .text(function(d) { return d.source.name + " -> " + d.target.name + "\n" + format(d.value); });
+
+  var drag = d3.behavior.drag()
+      .origin(function(d) { return d; })
+      .on("dragstart", function() { this.parentNode.appendChild(this); })
+      .on("drag", dragmove);
 
   var node = allgraphics.append("g").attr("id", "node-container")
       .selectAll(".node")
@@ -122,10 +121,7 @@ function createChart( energy ) {
     .enter().append("g")
       .attr("class", "node")
       .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-    .call(d3.behavior.drag()
-      .origin(function(d) { return d; })
-      .on("dragstart", function() { this.parentNode.appendChild(this); })
-      .on("drag", dragmove));
+    .call(drag);
 
   node.append("rect")
       .attr("height", function(d) { return d.dy; })
@@ -156,18 +152,16 @@ function createChart( energy ) {
   var numCycles = _.filter(sankey.links(), function(link){ return link.causesCycle; }).length;
 
   var cycleTopMarginSize = (sankey.cycleLaneDistFromFwdPaths() -
-	    ( (sankey.cycleLaneNarrowWidth() + sankey.cycleSmallWidthBuffer() ) * numCycles ) )
+        ( (sankey.cycleLaneNarrowWidth() + sankey.cycleSmallWidthBuffer() ) * numCycles ) )
   var horizontalMarginSize = ( sankey.cycleDistFromNode() + sankey.cycleControlPointDist() );
 
   svg = d3.select("#chart").select("svg")
     .attr( "viewBox",
-	  "" + (0 - horizontalMarginSize ) + " "         // left
-	  + cycleTopMarginSize + " "                     // top
-	  + (960 + horizontalMarginSize * 2 ) + " "     // width
-	  + (500 + (-1 * cycleTopMarginSize)) + " " );  // height
+        "" + (0 - horizontalMarginSize ) + " "         // left
+        + cycleTopMarginSize + " "                     // top
+        + (960 + horizontalMarginSize * 2 ) + " "     // width
+        + (500 + (-1 * cycleTopMarginSize)) + " " );  // height
 };
-
-
 
 function generateRandomData() {
   var dataObject = {
@@ -189,10 +183,9 @@ function generateRandomData() {
   return dataObject;
 }
 
-var energyData = generateRandomData();
+createChart( generateRandomData() );
+/* $('.link').on('click', click); */
 
-
-createChart( energyData );
 </script>
 </body>
 </html>
