@@ -8,7 +8,7 @@
 * Possible states
 ** incomplete task: start_date DATE / start_state int / end_date NULL / end_state NULL
 ** complete task with next state: start_date DATE / start_state int / end_date DATE / end_state int
-** complete task wHich is terminal: start_date DATE / start_state int / end_date DATE / end_state NULL
+** complete task which is terminal: start_date DATE / start_state int / end_date DATE / end_state NULL
 * Workflow
 ** Node is created with a `start_state` and `start_date`
 ** When updated, the node gets an `end_date` and either:
