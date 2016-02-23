@@ -3,11 +3,11 @@
 <head>
 
 <script type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
+<script type="text/javascript" src="http://underscorejs.org/underscore-min.js"></script>
 <script type="text/javascript" src="./sankey.js"></script>
 
 <title>Sankey Diagram</title>
 <style>
-
 #chart {
   height: 800px;
 }
@@ -152,13 +152,8 @@ function createChart( energy ) {
     link.attr("d", path);
   }
 
-  // I need to learn javascript
-  var numCycles = 0;
-  for( var i = 0; i< sankey.links().length; i++ ) {
-    if( sankey.links()[i].causesCycle ) {
-      numCycles++;
-    }
-  }
+  /* number of cycles is length of filtered array of links that cause a cycle */
+  var numCycles = _.filter(sankey.links(), function(link){ return link.causesCycle; }).length;
 
   var cycleTopMarginSize = (sankey.cycleLaneDistFromFwdPaths() -
 	    ( (sankey.cycleLaneNarrowWidth() + sankey.cycleSmallWidthBuffer() ) * numCycles ) )
